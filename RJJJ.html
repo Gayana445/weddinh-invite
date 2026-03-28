@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПРИГЛАШЕНИЕ НА СВАДЬБУ</title>
+<style>
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+    background: linear-gradient(180deg, #fff0f5, #ffeedd);
+    color: #333;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.card {
+    background: #ffffff;
+    padding: 30px 20px;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+}
+h1 { font-size:36px; color:#e07fa0; text-transform:uppercase; margin-bottom:15px; }
+.names { font-size:32px; font-weight:bold; color:#d46a92; text-transform:uppercase; margin-bottom:10px; }
+.date { font-size:24px; font-weight:bold; color:#a55b7f; text-transform:uppercase; margin-bottom:15px; }
+#timer { font-size:24px; font-weight:bold; color:#b95b80; margin-bottom:20px; }
+.restaurant { font-size:26px; font-weight:bold; color:#e75480; text-transform:uppercase; margin:10px 0; }
+.message { font-size:20px; font-style:italic; color:#a55b7f; margin:15px 0; }
+
+.map-container { width: 100%; height: 280px; margin:20px 0; border-radius:12px; overflow:hidden; box-shadow:0 5px 20px rgba(0,0,0,0.15); }
+iframe { width:100%; height:100%; border:0; border-radius:12px; }
+.button { display:inline-block; margin-top:10px; padding:10px 15px; background:#d46a92; color:white; border-radius:12px; text-decoration:none; transition:0.3s; }
+.button:hover { background:#b9557c; }
+
+/* Сердечки через JS будут абсолютно позиционированы */
+.heart {
+    position: absolute;
+    font-size: 20px;
+    pointer-events: none;
+    user-select: none;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h1>ПРИГЛАШЕНИЕ НА СВАДЬБУ</h1>
+        <div class="names">ОЛЕГ & ГАЯНЕ</div>
+        <div class="date">06.06.2026</div>
+        <div id="timer"></div>
+        <div class="message">МЫ БУДЕМ СЧАСТЛИВЫ РАЗДЕЛИТЬ ЭТОТ ДЕНЬ С ВАМИ!</div>
+
+        <div class="restaurant">РЕСТОРАН “AMORE”</div>
+        <div class="info">М-5 УРАЛ, 180-Й КИЛОМЕТР, С2</div>
+        <div class="map-container">
+            <iframe src="https://yandex.ru/map-widget/v1/?ll=39.4321,54.1234&z=15&mode=search&text=Ресторан%20Amore%2C%20М-5%20Урал%20180%20км" allowfullscreen></iframe>
+        </div>
+        <a class="button" href="https://yandex.ru/maps/?text=Ресторан+Amore,+М-5+Урал+180+км" target="_blank">ОТКРЫТЬ В ЯНДЕКС.КАРТАХ</a>
+    </div>
+</div>
+
+<!-- Музыка -->
+<audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5b3f5b3d5c.mp3?filename=romantic-ambient-110397.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Таймер с секундами
+function updateTimer() {
+    const weddingDate = new Date("2026-06-06T00:00:00");
+    const now = new Date();
+    let diff = weddingDate.getTime() - now.getTime();
+
+    if(diff <= 0) {
+        document.getElementById("timer").innerHTML = "СЕГОДНЯ СВАДЬБА!";
+        return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    diff -= days * (1000 * 60 * 60 * 24);
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    diff -= hours * (1000 * 60 * 60);
+
+    const minutes = Math.floor(diff / (1000 * 60));
+    diff -= minutes * (1000 * 60);
+
+    const seconds = Math.floor(diff / 1000);
+
+    document.getElementById("timer").innerHTML = 
+        `До свадьбы: ${days}Д ${hours}Ч ${minutes}М ${seconds}С`;
+}
+updateTimer();
+setInterval(updateTimer, 1000);
+
+// Функция создания падающего сердца
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerText = '❤️';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.fontSize = (18 + Math.random() * 12) + 'px';
+    document.body.appendChild(heart);
+
+    let posY = -30;
+    const speed = 1 + Math.random() * 2;
+
+
+st sway = Math.random() * 50 - 25; // колебание по X
+    let swayOffset = 0;
+    let swayDir = 1;
+
+    const interval = setInterval(() => {
+        posY += speed;
+        swayOffset += swayDir * 0.5;
+        if(swayOffset > sway || swayOffset < -sway) swayDir *= -1;
+
+        heart.style.top = posY + 'px';
+        heart.style.left = (parseFloat(heart.style.left) + swayDir*0.5) + 'px';
+
+        if(posY > window.innerHeight) {
+            heart.remove();
+            clearInterval(interval);
+        }
+    }, 16); // ~60fps
+}
+
+// Создаём сердечки каждые 300мс
+setInterval(createHeart, 300);
+</script>
+
+</body>
+</html> con
